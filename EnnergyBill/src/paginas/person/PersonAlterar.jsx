@@ -1,5 +1,5 @@
 import {Link, useParams} from "react-router-dom";
-import ServicoForm from "./ServicoForm";
+import ServicoForm from "./PersonForm";
 
 function ServicoAlterar(){
     const {id} = useParams(); //Utilizado a partir da versao 6 do react-router.
