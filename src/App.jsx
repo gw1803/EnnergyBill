@@ -1,34 +1,40 @@
 import { useState } from 'react';
 import './App.css';
 import ResponsiveAppBar from './components/navbar/navbar';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from './paginas/Home.jsx'
+import { Container } from '@mui/material';
 
 function App() {
 
   return (
-    <BrowserRouter>
-    <Container>
-      
-      <Routes>
-        <Route exact path="" element={<ResponsiveAppBar/>}  />
+    <div className="App">
 
-        <Route path="/bill" >
-          <Route exact path="" element={<BillList/>}  />
-          <Route exact path="list" element={<BillList/>}  />
-          <Route exact path="incluir" element={<BillIncluir/>}  />
-          <Route exact path="alterar/:id" element={<BillAlterar/>}  />
-        </Route>
+      <BrowserRouter>
+        <Container>
+          <ResponsiveAppBar/>
 
-        <Route path="/person" >
-          <Route exact path="" element={<PersonList/>}  />
-          <Route exact path="list" element={<PersonList/>}  />
-          <Route exact path="incluir" element={<PersonIncluir/>}  />
-          <Route exact path="alterar/:id" element={<PersonAlterar/>}  />
-        </Route>
+          <Routes>
+            <Route exact path="/home" element={<Home />} />
+            {/* <Route path="/bill" >
+              <Route exact path="" element={<BillList/>}  />
+              <Route exact path="list" element={<BillList/>}  />
+              <Route exact path="incluir" element={<BillIncluir/>}  />
+              <Route exact path="alterar/:id" element={<BillAlterar/>}  />
+            </Route>
 
-      </Routes>
+            <Route path="/person" >
+              <Route exact path="" element={<PersonList/>}  />
+              <Route exact path="list" element={<PersonList/>}  />
+              <Route exact path="incluir" element={<PersonIncluir/>}  />
+              <Route exact path="alterar/:id" element={<PersonAlterar/>}  />
+            </Route>
+           */}
+          </Routes>
 
-    </Container>
-  </BrowserRouter>
+        </Container>
+      </BrowserRouter>
+    </div>
   )
 }
 
