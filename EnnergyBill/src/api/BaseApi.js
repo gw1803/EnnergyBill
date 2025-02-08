@@ -5,22 +5,20 @@ class BaseApi {
         this.baseUrl = "http://localhost:8080/";
     }
 
-    myFetch(setData, method, url, body) {
+    async myFetch(setData, method, url, body) {
 
         console.log("BaseApi.myFetch(method: " + method + ", url: " +url);
 
         fetch(url, {
             method: method,
-            mode: "cors", // no-cors, *cors, same-origin
+            contentType:'application/json',
+            body: JSON.stringify(body),
             headers: {
-                
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(body)
         })
             .then((resp) => resp.json())
             .then((data) => {
-                console.log(data);
                 if (setData){
                     setData(data);
                 }

@@ -1,5 +1,5 @@
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PersonApi from "../../api/PersonApi";
 
@@ -32,6 +32,7 @@ function PersonList() {
     const [personList, setPersonList] = useState([]);
     const location = useLocation();
     const personApi = new PersonApi();
+    const navigate = useNavigate();
 
 
 
@@ -44,9 +45,10 @@ function PersonList() {
         setShow(false);
     }
 
-    function handleExcluir() {
+    async function handleExcluir() {
         setShow(false);
-        personApi.excluir(idDelete);
+        await personApi.excluir(idDelete);
+        navigate(`/person/list`);
         console.log(`Excluido o person id: ${idDelete}`);
         consultarEPrecherTable();
     }
@@ -89,6 +91,7 @@ function PersonList() {
                             <StyledTableCell>ID </StyledTableCell>
                             <StyledTableCell align="center">Nome</StyledTableCell>
                             <StyledTableCell align="right"></StyledTableCell>
+                            <StyledTableCell align="right"></StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -106,7 +109,17 @@ function PersonList() {
                                     <button type="button" onClick={(e) => handleShow(item.id)} >
                                         <Icon>person_remove</Icon>
                                     </button>
+
+
                                 </TableCell>
+                                <TableCell align="center">
+                                    <Link to={`/person/alterar/${item.id}`}>
+                                        <button type="button">
+                                            <Icon>edit</Icon>
+                                        </button>
+                                    </Link>
+                                </TableCell>
+
                             </TableRow>
                         ))}
                     </TableBody>

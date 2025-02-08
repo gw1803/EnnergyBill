@@ -9,9 +9,9 @@ class PersonApi extends BaseApi{
         super.myFetch(setData, method, url);
     }
 
-    getPerson(setData, id){
+    async getPerson (setData, id){
         const method = "GET";
-        const url = `${this.baseUrl}person/${id}/`;
+        const url = `${this.baseUrl}person/${id}`;
         console.log(url);
         super.myFetch(setData, method, url);
     }
@@ -27,14 +27,14 @@ class PersonApi extends BaseApi{
         const method = "PUT";
         const url = `${this.baseUrl}person/`;
         console.log(url);
-        super.myFetch({}, method, url, person);
+        super.myFetch(false, method, url, person);
     }
 
-    excluir(id){
+    async excluir(id){
         const method = "DELETE";
         const url = `${this.baseUrl}person/${id}`;
         console.log(url);
-        super.myFetch({}, method, url);
+        await super.myFetch({}, method, url);
     }
 
 }

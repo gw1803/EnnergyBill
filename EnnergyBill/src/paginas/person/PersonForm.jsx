@@ -9,8 +9,14 @@ import styles from '../../index.module.css';
 function PersonForm({ id }) {
     const [errors, setErrors] = useState({});
     const [nome, setNome] = useState("");
+    const [name, setName] = useState("");
     const navigate = useNavigate();
 
+
+
+    function setPerson(person){
+        setName(person.nome);
+    }
 
     useEffect(() => {
         if (id) {
@@ -20,7 +26,7 @@ function PersonForm({ id }) {
         }
     }, [id]);
 
-    function cadastrarPerson(e) {
+    async function cadastrarPerson(e) {
         e.preventDefault();
         var person = { id: id, nome: nome };
         console.log(JSON.stringify(person));
@@ -28,6 +34,11 @@ function PersonForm({ id }) {
 
         const personApi = new PersonApi();
         if (id) {
+            const a = await fetch('http://localhost:8080/person',{
+                method: 'PUT',
+                body: person
+            });
+            console.log(a)
             personApi.alterarPerson(person);
         } else {
             personApi.incluirPerson(person);
@@ -47,7 +58,7 @@ function PersonForm({ id }) {
                 <Field.Label className={styles.Label}>Nome da pessoa</Field.Label>
                 <Field.Control
                     required
-                    placeholder="Insira um nome"
+                    placeholder={`Insira um nome novo de ${name}`}
                     className={styles.Input}
                     value={nome} 
                     onChange={(e) => setNome(e.target.value)}
