@@ -1,19 +1,33 @@
-import {Button, Col, Form, Modal, Row, Stack, Table} from "react-bootstrap";
-import Container from "react-bootstrap/Container";
-import {Link, useLocation} from "react-router-dom";
-import {BsFillPencilFill, BsFillTrashFill} from "react-icons/bs";
-import {useEffect, useState} from "react";
-import ServicoApi from "../../api/ServicoApi";
 
-function ServicoList(){
+import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import PersonApi from "../../api/PersonApi";
+
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+
+function PersonList() {
+
+    const StyledTableCell = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: 'rgba(25,118,210,255)',
+            color: theme.palette.common.white,
+        },
+    }));
 
     const [show, setShow] = useState(false);
     const [idDelete, setIdDelete] = useState(false);
-    const [servicoList, setServicoList] = useState([]);
+    const [personList, setPersonList] = useState([]);
     const location = useLocation();
-    const [searchText, setSearchText] = useState("");
 
-    const servicoApi = new ServicoApi();
+    const personApi = new PersonApi();
 
     function handleShow(id) {
         setIdDelete(id);
@@ -26,12 +40,12 @@ function ServicoList(){
 
     function handleExcluir() {
         setShow(false);
-        servicoApi.excluir(idDelete);
-        console.log(`Excluido o servico id: ${idDelete}`);
+        personApi.excluir(idDelete);
+        console.log(`Excluido o person id: ${idDelete}`);
         consultarEPrecherTable();
     }
 
-    function submitSearchServico(e) {
+    function submitSearchPerson(e) {
         e.preventDefault();
         consultarEPrecherTable();
     }
@@ -40,80 +54,38 @@ function ServicoList(){
         consultarEPrecherTable();
     }, [location.pathname]);
 
-    function consultarEPrecherTable(){
-        if (searchText.trim().length > 0){
-            servicoApi.getServicosByText(setServicoList, searchText);
-        }else{
-            servicoApi.getServicos(setServicoList);
-        }
-        
+    function consultarEPrecherTable() {
+        personApi.getPersons(setPersonList);
     }
 
-    return(
+    return (
         <>
-            <Container>
-                <br/>
-                <Row>
-                    <Col xl={2}>
-                        <Link to="/servico/incluir">
-                            <Button>+</Button>
-                        </Link>
-                    </Col>
-                </Row>
-                <br/>
-                <Table striped bordered hover>
-                    <thead>
-                    <tr>
-                        <th>Descricao</th>
-                        <th>Id.</th>
-                        <th>Valor</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        servicoList.map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.descricao}</td>
-                                <td>{item.id}</td>
-                                <td>{item.valor}</td>
-                                <td>
-                                    <Stack direction="horizontal" gap={3}>
-                                        <div className="ms-auto">
-                                            <Button variant="danger" size="sm" onClick={(e) =>handleShow(item.id)}>
-                                                <BsFillTrashFill/>
-                                            </Button>
-                                        </div>
-                                        <div className="">
-                                            <Link to={`/servico/alterar/${item.id}`}>
-                                                <Button size="sm"><BsFillPencilFill/></Button>
-                                            </Link>
-                                        </div>
-                                    </Stack>
-                                </td>
-                            </tr>
-                        ))
-                    }
-                    </tbody>
+            <h1>Lista de pessoas</h1>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell>ID </StyledTableCell>
+                            <StyledTableCell align="right">Nome</StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {personList.map((item) => (
+                            <TableRow
+                                key={item.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <TableCell component="th" scope="item">
+                                    {item.id}
+                                </TableCell>
+                                <TableCell align="right">{item.nome}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
                 </Table>
-
-                <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Confirmação</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Confirma a exclusao do servico {idDelete}?</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Fechar
-                        </Button>
-                        <Button variant="danger" onClick={handleExcluir}>
-                            Excluir
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            </Container>
+            </TableContainer>
         </>
     );
 }
 
-export default ServicoList;
+export default PersonList;

@@ -2,7 +2,7 @@
 class BaseApi {
 
     constructor() {
-        this.baseUrl = "http://localhost:8081/";
+        this.baseUrl = "http://localhost:8080/";
     }
 
     myFetch(setData, method, url, body) {
@@ -13,7 +13,8 @@ class BaseApi {
             method: method,
             mode: "cors", // no-cors, *cors, same-origin
             headers: {
-                'Content-Type': 'application/json',
+                
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
         })

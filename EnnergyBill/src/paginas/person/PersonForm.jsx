@@ -8,13 +8,9 @@ import styles from '../../index.module.css';
 
 function PersonForm({ id }) {
     const [errors, setErrors] = useState({});
-    const [loading, setLoading] = useState(false);
     const [nome, setNome] = useState("");
     const navigate = useNavigate();
 
-    function setPerson(person) {
-        setNome(person.nome);
-    }
 
     useEffect(() => {
         if (id) {
@@ -45,20 +41,7 @@ function PersonForm({ id }) {
             className={styles.Form}
             errors={errors}
             onClearErrors={setErrors}
-            onSubmit={async (event) => {
-                event.preventDefault();
-                const formData = new FormData(event.currentTarget);
-                const value = formData.get('url');
-
-                setLoading(true);
-                const response = await submitForm(value);
-                const serverErrors = {
-                    url: response.error,
-                };
-
-                setErrors(serverErrors);
-                setLoading(false);
-            }}
+            onSubmit={ cadastrarPerson}
         >
             <Field.Root name="nome" className={styles.Field}>
                 <Field.Label className={styles.Label}>Nome da pessoa</Field.Label>
@@ -66,10 +49,12 @@ function PersonForm({ id }) {
                     required
                     placeholder="Insira um nome"
                     className={styles.Input}
+                    value={nome} 
+                    onChange={(e) => setNome(e.target.value)}
                 />
                 <Field.Error className={styles.Error} />
             </Field.Root>
-            <button disabled={loading} type="submit" className={styles.Button}>
+            <button type="submit" className={styles.Button}>
                 Submit
             </button>
         </Form>
