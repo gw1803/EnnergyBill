@@ -7,10 +7,9 @@ function App() {
   return (
     <BrowserRouter>
     <Container>
-      <ResponsiveAppBar/>
-
+      
       <Routes>
-        <Route exact path="" element={<Home/>}  />
+        <Route exact path="" element={<ResponsiveAppBar/>}  />
 
         <Route path="/bill" >
           <Route exact path="" element={<BillList/>}  />
