@@ -1,7 +1,7 @@
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import PersonApi from "../../api/PersonApi";
+import BillApi from "../../api/BillApi";
 
 import * as React from 'react';
 import Table from '@mui/material/Table';
@@ -17,7 +17,7 @@ import Icon from '@mui/material/Icon';
 import { Button, Box, Modal, Typography } from "@mui/material";
 
 
-function PersonList() {
+function BillList() {
 
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -29,9 +29,9 @@ function PersonList() {
 
     const [show, setShow] = useState(false);
     const [idDelete, setIdDelete] = useState(false);
-    const [personList, setPersonList] = useState([]);
+    const [billList, setBillList] = useState([]);
     const location = useLocation();
-    const personApi = new PersonApi();
+    const billApi = new BillApi();
     const navigate = useNavigate();
 
 
@@ -47,13 +47,13 @@ function PersonList() {
 
     async function handleExcluir() {
         setShow(false);
-        await personApi.excluir(idDelete);
-        navigate(`/person/list`);
-        console.log(`Excluido o person id: ${idDelete}`);
+        await billApi.excluir(idDelete);
+        navigate(`/bill/list`);
+        console.log(`Excluido o bill id: ${idDelete}`);
         consultarEPrecherTable();
     }
 
-    function submitSearchPerson(e) {
+    function submitSearchBill(e) {
         e.preventDefault();
         consultarEPrecherTable();
     }
@@ -63,7 +63,7 @@ function PersonList() {
     }, [location.pathname]);
 
     function consultarEPrecherTable() {
-        personApi.getPersons(setPersonList);
+        billApi.getBills(setBillList);
         console.log("estou aqui amigo")
     }
 
@@ -75,8 +75,8 @@ function PersonList() {
             />
 
             <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-                <h1>Lista de pessoas</h1>
-                <Link to="/person/incluir">
+                <h1>Lista de Contas</h1>
+                <Link to="/bill/incluir">
                     <Button variant="contained">
                         <Icon>add_circle</Icon>
                     </Button>
@@ -89,13 +89,15 @@ function PersonList() {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>ID </StyledTableCell>
-                            <StyledTableCell align="center">Nome</StyledTableCell>
+                            <StyledTableCell align="center">Data</StyledTableCell>
+                            <StyledTableCell align="center">Valor</StyledTableCell>
+                            <StyledTableCell align="center">Responsável</StyledTableCell>
                             <StyledTableCell align="right"></StyledTableCell>
                             <StyledTableCell align="right"></StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {personList.map((item) => (
+                        {billList.map((item) => (
                             <TableRow
                                 key={item.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -103,17 +105,21 @@ function PersonList() {
                                 <TableCell component="th" scope="item">
                                     {item.id}
                                 </TableCell>
-                                <TableCell align="center">{item.nome}
+                                <TableCell align="center">{item.data}
+                                </TableCell>
+                                <TableCell align="center">{item.valor}
+                                </TableCell>
+                                <TableCell align="center">{item.person.nome}
                                 </TableCell>
                                 <TableCell align="center">
                                     <button type="button" onClick={(e) => handleShow(item.id)} >
-                                        <Icon>person_remove</Icon>
+                                        <Icon>delete</Icon>
                                     </button>
 
 
                                 </TableCell>
                                 <TableCell align="center">
-                                    <Link to={`/person/alterar/${item.id}`}>
+                                    <Link to={`/bill/alterar/${item.id}`}>
                                         <button type="button">
                                             <Icon>edit</Icon>
                                         </button>
@@ -163,4 +169,4 @@ function PersonList() {
     );
 }
 
-export default PersonList;
+export default BillList;

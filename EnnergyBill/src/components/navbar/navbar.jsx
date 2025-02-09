@@ -76,7 +76,7 @@ function ResponsiveAppBar() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               <MenuItem key="Bills" onClick={handleCloseNavMenu}>
-                <Link to="/person/list">
+                <Link to="/bill/list">
                   <Typography sx={{ color: 'black', textAlign: 'center' }}>Bills</Typography>
                 </Link>
               </MenuItem>
@@ -107,7 +107,7 @@ function ResponsiveAppBar() {
             Ennergy Bills
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Link to="/person/list">
+            <Link to="/bill/list">
               <Button
                 key="Bills"
                 onClick={handleCloseNavMenu}
